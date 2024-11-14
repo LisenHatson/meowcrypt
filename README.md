@@ -1,9 +1,9 @@
 ## !!MeowCrypt is still in progress!!
 
 ### RKS A 2024 Kelompok 5
-- Arya Senapati Rabbani
-- Christin Agatha Purba
-- Muhammad Rizki Pradana
+- Arya Senapati Rabbani (4332401024)
+- Christin Agatha Purba (4332401030)
+- Muhammad Rizki Pradana (4332401029)
 
 MeowCrypt dependencies:
 - [Git](https://git-scm.com/downloads)
