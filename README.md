@@ -1,6 +1,3 @@
-MeowCrypt
-========
-
 ## !!MeowCrypt is still in progress!!
 
 ### RKS A 2024 Kelompok 5
@@ -13,6 +10,7 @@ MeowCrypt dependencies:
 - [SQLite](https://sqlite.org/download.html)
 - [Python](https://www.python.org/downloads/)
 > [Pyperclip (Python Package)](https://pypi.org/project/pyperclip/)
+
 > [Cryptography (Python Package)](https://pypi.org/project/cryptography/)
 
 
