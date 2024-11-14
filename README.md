@@ -12,8 +12,8 @@ MeowCrypt dependencies:
 - [Git](https://git-scm.com/downloads)
 - [SQLite](https://sqlite.org/download.html)
 - [Python](https://www.python.org/downloads/)
-- [Pyperclip](https://pypi.org/project/pyperclip/)
-- [Cryptography](https://pypi.org/project/cryptography/)
+- [Pyperclip (Python Package)](https://pypi.org/project/pyperclip/)
+- [Cryptography (Python Package)](https://pypi.org/project/cryptography/)
 
 ```
 git clone https://github.com/LisenHatson/meowcrypt.git
