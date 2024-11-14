@@ -24,24 +24,27 @@ class MeowCryptGUI:
         create_user_table()
 
         # User input fields
+        self.meow = tk.Label(root, text="/^O w O^\\")
+        self.meow.grid(row=0, column=2, padx=10, pady=10)
+
         self.username_label = tk.Label(root, text="Username")
-        self.username_label.grid(row=0, column=1, padx=10, pady=10)
+        self.username_label.grid(row=1, column=1, padx=10, pady=10)
         self.username_entry = selAll(root)
-        self.username_entry.grid(row=0, column=2, padx=10, pady=10)
+        self.username_entry.grid(row=1, column=2, padx=10, pady=10)
 
         self.password_label = tk.Label(root, text="Password")
-        self.password_label.grid(row=1, column=1, padx=10, pady=10)
+        self.password_label.grid(row=2, column=1, padx=10, pady=10)
         self.password_entry = selAll(root, show='*')
-        self.password_entry.grid(row=1, column=2, padx=10, pady=10)
+        self.password_entry.grid(row=2, column=2, padx=10, pady=10)
 
         # Login and Register buttons
         self.login_button = tk.Button(root, text="Login", command=self.login)
-        self.login_button.grid(row=2, column=1, padx=10, pady=10)
+        self.login_button.grid(row=3, column=1, padx=10, pady=10)
         self.register_button = tk.Button(root, text="Register", command=self.register)
-        self.register_button.grid(row=2, column=2, padx=10, pady=10)
+        self.register_button.grid(row=3, column=2, padx=10, pady=10)
 
         self.cc = tk.Label(root, text="MeowCrypt - RKS A 2024 Kelompok 5")
-        self.cc.grid(row=3, column=2, padx=10, pady=10)
+        self.cc.grid(row=4, column=2, padx=10, pady=10)
         # Create a frame for the tools page
         self.tools_frame = tk.Frame(root)
 
