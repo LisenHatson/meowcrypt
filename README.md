@@ -1,4 +1,11 @@
-## !!MeowCrypt is still in progress!!
+## MeowCrypt is still in progress!!
+
+# The MeowCrypt
+### Key features:
+- Credentials feature with hashed password stored to sqlite3 local database (to fullfill one of our subject).
+- Text and file encryption using Fernet.
+- Meowovert (convert common characters into cat meows).
+
 
 ### RKS A 2024 Kelompok 5
 - Arya Senapati Rabbani (4332401024)
@@ -9,12 +16,11 @@ MeowCrypt dependencies:
 - [Git](https://git-scm.com/downloads)
 - [SQLite](https://sqlite.org/download.html)
 - [Python](https://www.python.org/downloads/)
-
 - [Pyperclip (Python Package)](https://pypi.org/project/pyperclip/)
 - [Cryptography (Python Package)](https://pypi.org/project/cryptography/)
 
 
-#### Do this on your favorite terminal program
+#### Run this on your favorite terminal program
 ```
 git clone https://github.com/LisenHatson/meowcrypt.git
 ```
