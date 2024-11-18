@@ -1,12 +1,14 @@
 import sys
 from db import create_user_table, register_user, get_user
-from tools import hash_password, generate_key, encrypt_text, decrypt_text, encrypt_file, decrypt_file
+from tools import hash_password, generate_key, encrypt_text, decrypt_text, encrypt_file, decrypt_file, save_key, load_key
+
+eky = load_key()
 
 def cli():
     create_user_table()
     while True:
-        action = input("Enter 'register' to create a new user or 'login' to access your account: ").strip().lower()
-        if action == 'register':
+        action = input("/^OwO^\\ \nr: create a new user, \nl: login, \nc: close \n(r/l/c): ").strip().lower()
+        if action == 'r':
             username = input("Enter username: ").strip()
             password = input("Enter password: ").strip()
             if not username or not password:
@@ -18,7 +20,7 @@ def cli():
                 print("User  registered successfully!")
             except Exception as e:
                 print(f"Error: {e}")
-        elif action == 'login':
+        elif action == 'l':
             username = input("Enter username: ").strip()
             password = input("Enter password: ").strip()
             if not username or not password:
@@ -29,31 +31,33 @@ def cli():
                 print("Login successful!")
                 # Proceed to encryption tools
                 while True:
-                    tool_action = input("Enter 'encrypt' to encrypt text, 'decrypt' to decrypt text, or 'exit' to logout: ").strip().lower()
-                    if tool_action == 'encrypt':
+                    tool_action = input("e: encrypt text, \nd: decrypt text, \nc: to close \n(e/d/c): ").strip().lower()
+                    if tool_action == 'e':
                         text = input("Enter text to encrypt: ").strip()
                         if not text:
                             print("Text cannot be empty.")
                             continue
-                        key = generate_key()
-                        encrypted = encrypt_text(key, text)
+                        encrypted = encrypt_text(eky, text)
                         print(f"Encrypted text: {encrypted.decode()}")
-                    elif tool_action == 'decrypt':
+                    elif tool_action == 'd':
                         encrypted_text = input("Enter encrypted text: ").strip()
                         if not encrypted_text:
                             print("Encrypted text cannot be empty.")
                             continue
                         try:
-                            decrypted = decrypt_text(key, encrypted_text.encode())
+                            decrypted = decrypt_text(eky, encrypted_text.encode())
                             print(f"Decrypted text: {decrypted}")
                         except Exception as e:
                             print(f"Decryption failed: {str(e)}")
-                    elif tool_action == 'exit':
+                    elif tool_action == 'c':
                         break
                     else:
                         print("Invalid action. Please try again.")
             else:
                 print("Invalid credentials!")
+
+        elif action == 'c':
+            sys.exit(0)
         else:
             print("Invalid action. Please try again.")
 

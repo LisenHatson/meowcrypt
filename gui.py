@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox, filedialog
 from db import create_user_table, register_user, get_user
 from tools import hash_password, generate_key, encrypt_text, decrypt_text, encrypt_file, decrypt_file, save_key, load_key
+from meowovert import meowovert, convMeow, convOrig
 import pyperclip
 
 eky = load_key()
@@ -45,6 +46,7 @@ class MeowCryptGUI:
 
         self.cc = tk.Label(root, text="MeowCrypt - RKS A 2024 Kelompok 5")
         self.cc.grid(row=4, column=2, padx=10, pady=10)
+
         # Create a frame for the tools page
         self.tools_frame = tk.Frame(root)
 
@@ -89,8 +91,47 @@ class MeowCryptGUI:
         self.decrypt_file_button = tk.Button(self.encryption_frame, text="Decrypt File", command=self.decrypt_file)
         self.decrypt_file_button.grid(row=2, column=2, padx=10, pady=10)
 
+        self.gotoMeow = tk.Button(self.encryption_frame, text="try Meowovert", command=self.meowGoto)
+        self.gotoMeow.grid(row=4, column=3, padx=10, pady=10)
+
         self.cc1 = tk.Label(self.encryption_frame, text="MeowCrypt - RKS A 2024 Kelompok 5")
         self.cc1.grid(row=5, column=1, padx=10, pady=10)
+
+        self.meowGo = tk.Frame(root)
+        self.meowFrame = tk.Frame(self.meowGo)
+
+        self.nyanLabel = tk.Label(self.meowFrame, text="The Meowovert")
+        self.nyanLabel.grid(row=0, column=1, padx=10, pady=10)
+
+        self.text_label = tk.Label(self.meowFrame, text="Text to Meowovert:")
+        self.text_label.grid(row=1, column=0, padx=10, pady=10)
+
+        self.orig_entry = selAll(self.meowFrame)
+        self.orig_entry.grid(row=2, column=0, padx=20, pady=20)
+
+        self.encrypt_button = tk.Button(self.meowFrame, text="Meowovert Text", command=self.convtoMeow)
+        self.encrypt_button.grid(row=3, column=0, padx=10, pady=10)
+
+        self.clear_decrypt = tk.Button(self.meowFrame, text="Clear")
+        self.clear_decrypt.grid(row=4, column=0, padx=10, pady=10)
+        self.clear_decrypt.config(command=lambda: self.orig_entry.delete(0, tk.END))
+
+        self.declabel = tk.Label(self.meowFrame, text="Text to Demeowovert:")
+        self.declabel.grid(row=1, column=1, padx=10, pady=10)
+
+        self.meow_entry = selAll(self.meowFrame)
+        self.meow_entry.grid(row=2, column=1, padx=20, pady=20)
+
+        self.decrypt_button = tk.Button(self.meowFrame, text="Demeowovert Text", command=self.convtoOrig)
+        self.decrypt_button.grid(row=3, column=1, padx=10, pady=10)
+
+        self.clear_encrypt = tk.Button(self.meowFrame, text="Clear")
+        self.clear_encrypt.grid(row=4, column=1, padx=10, pady=10)
+        self.clear_encrypt.config(command=lambda: self.meow_entry.delete(0, tk.END))
+
+        self.cc2 = tk.Label(self.meowFrame, text="MeowCrypt - RKS A 2024 Kelompok 5")
+        self.cc2.grid(row=5, column=1, padx=10, pady=10)
+
     def register(self):
         username = self.username_entry.get().strip()
         password = self.password_entry.get().strip()
@@ -127,8 +168,39 @@ class MeowCryptGUI:
             widget.grid_forget()
 
         # Show tools frame
-        self.tools_frame.grid(row=2, column=2, padx=10, pady=10)
-        self.encryption_frame.grid(row=2, column=2, padx=10, pady=10)  # Show encryption tools
+        self.tools_frame.grid()
+        self.encryption_frame.grid()
+
+    def meowGoto(self):
+        for widget in self.encryption_frame.winfo_children():
+            widget.grid_forget()
+
+        self.meowGo.grid()
+        self.meowFrame.grid()
+
+    def convtoMeow(self):
+        input = self.orig_entry.get().strip()
+        if not input:
+            messagebox.showerror("Mewror", "Text cannot be meowmpty.")
+            return
+        encrypted = convMeow(input)
+        self.meow_entry.delete(0 , tk.END)  # Clear previous entry
+        self.meow_entry.insert(0, encrypted)  # Show encrypted text
+
+    def convtoOrig(self):
+        meow_input = self.meow_entry.get().strip()
+        if not meow_input:
+            messagebox.showerror("Mewror", "Meowoverted text cannot be meowmpty.")
+            return
+        try:
+            decrypted = convOrig(meow_input)
+
+            self.orig_entry.delete(0, tk.END)
+            self.orig_entry.insert(0, decrypted)
+
+            # messagebox.showinfo("Meowverted!", f"Decrypted text: {decrypted}")
+        except Exception as e:
+            messagebox.showerror("Error", f"Decryption failed: {str(e)}")
 
     def encrypt_text(self):
         key = eky

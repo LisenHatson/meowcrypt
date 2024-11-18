@@ -1,7 +1,7 @@
 import sqlite3
 
 def connect_db():
-    conn = sqlite3.connect('meowcrypt.db')
+    conn = sqlite3.connect('acc.db')
     return conn
 
 def create_user_table():
