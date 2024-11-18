@@ -1,4 +1,4 @@
-## MeowCrypt is still in progress!!
+## MeowCrypt is still under construction!
 
 # The MeowCrypt
 ### Key features:
@@ -20,14 +20,35 @@ MeowCrypt dependencies:
 - [Cryptography (Python Package)](https://pypi.org/project/cryptography/)
 
 
-#### Run this on your favorite terminal program
-```
-git clone https://github.com/LisenHatson/meowcrypt.git
-```
+#### Run on your favorite terminal program
+>assuming you have already installed most of the dependencies
+
+Install the required python packages
 ```
 pip install pyperclip cryptography
 ```
+
+
+Be in your preferred directory to access the program, then clone the repository
+```
+git clone https://github.com/LisenHatson/meowcrypt.git
+```
+
+
+move to the repository directory
+```
+cd meowcrypt
+```
+
+
+execute the code
 ```
 python meowcrypt.py
+```
+
+
+or try the cli
+```
+python meowcrypt.py cli
 ```
 
