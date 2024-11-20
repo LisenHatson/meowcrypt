@@ -1,31 +1,31 @@
 def meowovert(char):
     meowpping = {
-        'a': 'mEoW ',
+        'a': 'MAUWW ',
         'b': 'MeOw ',
-        'c': 'MEow ',
-        'd': 'meOW ',
-        'e': 'mEoW ',
-        'f': 'MeOw ',
-        'g': 'MEow ',
-        'h': 'meOW ',
-        'i': 'mEoW ',
-        'j': 'MeOw ',
-        'k': 'MEow ',
-        'l': 'meOW ',
-        'm': 'mEoW ',
-        'n': 'MeOw ',
-        'o': 'MEow ',
-        'p': 'meOW ',
-        'q': 'mEoW ',
-        'r': 'MeOw ',
-        's': 'MEow ',
-        't': 'meOW ',
-        'u': 'mEoW ',
-        'v': 'MeOw ',
+        'c': 'hSSSh ',
+        'd': 'mauw ',
+        'e': 'meow ',
+        'f': 'MEOw ',
+        'g': 'mrruhh ',
+        'h': 'nyua ',
+        'i': 'mouw ',
+        'j': 'MeOW ',
+        'k': 'mrruww ',
+        'l': 'miii ',
+        'm': 'meee ',
+        'n': 'meOw ',
+        'o': 'nyawww ',
+        'p': 'ngauu ',
+        'q': 'mawww ',
+        'r': 'meoW ',
+        's': 'mrrr ',
+        't': 'hisss ',
+        'u': 'nyaauu ',
+        'v': 'mEOW ',
         'w': 'MEow ',
-        'x': 'meOW ',
-        'y': 'mEoW ',
-        'z': 'MeOw ',
+        'x': 'ssshaa ',
+        'y': 'mawmaw ',
+        'z': 'Meow ',
 
         '0': 'purr ',
         '1': 'ngauung ',
@@ -54,32 +54,32 @@ def convMeow(input):
 
 def convOrig(meow_input):
     meowpping = {
-        'mEoW': 'a',
+        'MAUWW': 'a',
         'MeOw': 'b',
-        'MEow': 'c',
-        'meOW': 'd',
-        'mEoW': 'e',
-        'MeOw': 'f',
-        'MEow': 'g',
-        'meOW': 'h',
-        'mEoW': 'i',
-        'MeOw': 'j',
-        'MEow': 'k',
-        'meOW': 'l',
-        'mEoW': 'm',
-        'MeOw': 'n',
-        'MEow': 'o',
-        'meOW': 'p',
-        'mEoW': 'q',
-        'MeOw': 'r',
-        'MEow': 's',
-        'meOW': 't',
-        'mEoW': 'u',
-        'MeOw': 'v',
+        'hSSSh': 'c',
+        'mauw': 'd',
+        'meow': 'e',
+        'MEOw': 'f',
+        'mrruhh': 'g',
+        'nyua': 'h',
+        'mouw': 'i',
+        'MeOW': 'j',
+        'mrruww': 'k',
+        'miii': 'l',
+        'meee': 'm',
+        'meOw': 'n',
+        'nyawww': 'o',
+        'ngauu': 'p',
+        'mawww': 'q',
+        'meoW': 'r',
+        'mrrr': 's',
+        'hisss': 't',
+        'nyaauu': 'u',
+        'mEOW': 'v',
         'MEow': 'w',
-        'meOW': 'x',
-        'mEoW': 'y',
-        'MeOw': 'z',
+        'ssshaa': 'x',
+        'mawmaw': 'y',
+        'Meow': 'z',
 
         'purr': '0',
         'ngauung': '1',
@@ -111,10 +111,10 @@ def convOrig(meow_input):
     return ''.join(original_chars)
 
 
-# input_string = "1 1213 !! 1??...?"
-# encrypted_string = convMeow(input_string)
-# decrypted_string = convOrig(encrypted_string.strip())
+input_string = "abcdefghijklmnopqrstuvwxyz1234567890"
+encrypted_string = convMeow(input_string)
+decrypted_string = convOrig(encrypted_string.strip())
 
-# print(f"Input: {input_string}")
-# print(f"Encrypted: {encrypted_string}")
-# print(f"Decrypted: {decrypted_string}")
+print(f"Input: {input_string}")
+print(f"Encrypted: {encrypted_string}")
+print(f"Decrypted: {decrypted_string}")

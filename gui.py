@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox, filedialog
+from PIL import Image, ImageTk
 from db import create_user_table, register_user, get_user
 from tools import hash_password, generate_key, encrypt_text, decrypt_text, encrypt_file, decrypt_file, save_key, load_key
 from meowovert import meowovert, convMeow, convOrig
@@ -24,6 +25,14 @@ class MeowCryptGUI:
         self.root.title("MeowCrypt")
         create_user_table()
 
+        # Load background image
+        self.bg_image = Image.open("meowcrypt.png")  # Replace with your image path
+        self.bg_image = self.bg_image.resize((1308, 736))  # Resize if necessary
+        self.bg_photo = ImageTk.PhotoImage(self.bg_image)
+
+        # Create a Label with the background image
+        self.bg_label = tk.Label(root, image=self.bg_photo)
+        self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)  # Fill the entire window
         # User input fields
         self.meow = tk.Label(root, text="/^O w O^\\")
         self.meow.grid(row=0, column=2, padx=10, pady=10)
