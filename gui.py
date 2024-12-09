@@ -3,7 +3,7 @@ from tkinter import messagebox, filedialog
 from PIL import Image, ImageTk
 from db import create_user_table, register_user, get_user
 from tools import hash_password, generate_key, encrypt_text, decrypt_text, encrypt_file, decrypt_file, save_key, load_key
-from meowovert import meowovert, convMeow, convOrig
+from vert import meowovert, convMeow, convOrig
 import pyperclip
 
 eky = load_key()
