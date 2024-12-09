@@ -1,3 +1,5 @@
+.gitignore
+
 *.db
 __pycache__/
 *.py[cod]
