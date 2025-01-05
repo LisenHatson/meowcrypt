@@ -111,10 +111,10 @@ def convOrig(meow_input):
     return ''.join(original_chars)
 
 
-input_string = "abcdefghijklmnopqrstuvwxyz1234567890"
-encrypted_string = convMeow(input_string)
-decrypted_string = convOrig(encrypted_string.strip())
+# input_string = "abcdefghijklmnopqrstuvwxyz1234567890"
+# encrypted_string = convMeow(input_string)
+# decrypted_string = convOrig(encrypted_string.strip())
 
-print(f"Input: {input_string}")
-print(f"Encrypted: {encrypted_string}")
-print(f"Decrypted: {decrypted_string}")
+# print(f"Input: {input_string}")
+# print(f"Encrypted: {encrypted_string}")
+# print(f"Decrypted: {decrypted_string}")

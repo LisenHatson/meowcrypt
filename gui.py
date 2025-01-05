@@ -1,10 +1,10 @@
 import tkinter as tk
-from tkinter import messagebox, filedialog
-from PIL import Image, ImageTk
+from tkinter import messagebox, filedialog, Tk, Canvas, Entry, Button, PhotoImage
 from db import create_user_table, register_user, get_user
 from tools import hash_password, generate_key, encrypt_text, decrypt_text, encrypt_file, decrypt_file, save_key, load_key
 from vert import meowovert, convMeow, convOrig
 import pyperclip
+import re
 
 eky = load_key()
 
@@ -14,139 +14,303 @@ class selAll(tk.Entry):
         self.bind("<Control-a>", self.select_all)
 
      def select_all(self, event):
-        # Select all text in the widget
         self.select_range(0, tk.END)
-        self.focus_set()  # Focus back on the input box
-        return "break"  # Prevent further handling of this event
+        self.focus_set()
+        return "break"
 
+
+# Main GUI
 class MeowCryptGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("MeowCrypt")
+        self.root.geometry("800x600")
+        self.root.configure(bg="#9e6df7")
+        self.root.resizable(False, False)
+        self.canvas = Canvas(
+                self.root,
+                bg="#9e6df7",
+                height=600,
+                width=800,
+                bd=0,
+                highlightthickness=0,
+                relief="ridge"
+                )
+        self.canvas.place(x=0, y=0)
+
+        self.loginpage()
+
+    def loginpage(self):
         create_user_table()
 
-        # Load background image
-        self.bg_image = Image.open("meowcrypt.png")  # Replace with your image path
-        self.bg_image = self.bg_image.resize((1308, 736))  # Resize if necessary
-        self.bg_photo = ImageTk.PhotoImage(self.bg_image)
+        self.bg_update("./assets/Aloginpagemain.png")
+        self.entry_img = PhotoImage(file=("./assets/entry.png"))
 
-        # Create a Label with the background image
-        self.bg_label = tk.Label(root, image=self.bg_photo)
-        self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)  # Fill the entire window
-        # User input fields
-        self.meow = tk.Label(root, text="/^O w O^\\")
-        self.meow.grid(row=0, column=2, padx=10, pady=10)
+        self.canvas.create_image(400.0, 257.0, image=self.entry_img)
+        self.entry_user = Entry(
+                bd=0,
+                bg="#ffffff",
+                fg="#000716",
+                highlightthickness=0,
+                font=("Montserrat", 15))
+        self.entry_user.place(x=235.0, y=233.0, width=300.0, height=45.0)
 
-        self.username_label = tk.Label(root, text="Username")
-        self.username_label.grid(row=1, column=1, padx=10, pady=10)
-        self.username_entry = selAll(root)
-        self.username_entry.grid(row=1, column=2, padx=10, pady=10)
+        self.canvas.create_image(400.0, 340.0, image=self.entry_img)
+        self.entry_pass = Entry(
+                bd=0,
+                bg="#ffffff",
+                fg="#000716",
+                highlightthickness=0,
+                show="*",
+                font=("Montserrat", 15))
+        self.entry_pass.place(x=235.0, y=316.0, width=300.0, height=45.0)
 
-        self.password_label = tk.Label(root, text="Password")
-        self.password_label.grid(row=2, column=1, padx=10, pady=10)
-        self.password_entry = selAll(root, show='*')
-        self.password_entry.grid(row=2, column=2, padx=10, pady=10)
+        self.aboutusbutton_img = PhotoImage(file=("./assets/boutusbutton.png"))
+        self.aboutusbutton = Button(
+                image=self.aboutusbutton_img,
+                borderwidth=0,
+                highlightthickness=0,
+                command=self.show_aboutus,
+                relief="flat",
+                bg="#9e6df7", activebackground="#9e6df7"
+                )
+        self.aboutusbutton.place(x=46.0, y=450.0, width=120.0, height=120.0)
 
-        # Login and Register buttons
-        self.login_button = tk.Button(root, text="Login", command=self.login)
-        self.login_button.grid(row=3, column=1, padx=10, pady=10)
-        self.register_button = tk.Button(root, text="Register", command=self.register)
-        self.register_button.grid(row=3, column=2, padx=10, pady=10)
+        self.logbutton_img = PhotoImage(file=("./assets/logbutton.png"))
+        self.logbutton = Button(
+                image=self.logbutton_img,
+                borderwidth=0,
+                highlightthickness=0,
+                command=self.login,
+                relief="flat",
+                bg="#d2b9ff", activebackground="#d2b9ff"
+                )
+        self.logbutton.place(x=225.0, y=395.0, width=350.0, height=70.0)
 
-        self.cc = tk.Label(root, text="MeowCrypt - RKS A 2024 Kelompok 5")
-        self.cc.grid(row=4, column=2, padx=10, pady=10)
+        self.regbutton_img = PhotoImage(file=("./assets/regbutton.png"))
+        self.regbutton = Button(
+                image=self.regbutton_img,
+                borderwidth=0,
+                highlightthickness=0,
+                command=self.register,
+                relief="flat",
+                bg="#d2b9ff", activebackground="#d2b9ff"
+                )
+        self.regbutton.place(x=225.0, y=480.0, width=350.0, height=70.0)
 
-        # Create a frame for the tools page
-        self.tools_frame = tk.Frame(root)
+    def toolspage(self):
+        self.bg_update("./assets/Atoolspagemain.png")
 
-        # Encryption tools frame (initially hidden)
-        self.encryption_frame = tk.Frame(self.tools_frame)
+        self.outbutton_img = PhotoImage(file=("./assets/outbutton.png"))
+        self.outbutton = Button(
+                image=self.outbutton_img,
+                borderwidth=0,
+                highlightthickness=0,
+                command=self.signout,
+                relief="flat",
+                bg="#9e6df7", activebackground="#9e6df7"
+                )
+        self.outbutton.place(x=615.0, y=500.0, width=150.0, height=60.0)
 
-        # Text encryption fields
-        self.text_label = tk.Label(self.encryption_frame, text="Text to Encrypt:")
-        self.text_label.grid(row=0, column=0, padx=10, pady=10)
-        self.text_entry = selAll(self.encryption_frame)
-        self.text_entry.grid(row=1, column=0, padx=20, pady=20)
+        self.meowbutton_img = PhotoImage(file=("./assets/meowbutton.png"))
+        self.meowbutton = Button(
+                image=self.meowbutton_img,
+                borderwidth=0,
+                highlightthickness=0,
+                command=self.show_meow,
+                relief="flat",
+                bg="#9e6df7", activebackground="#9e6df7"
+                )
+        self.meowbutton.place(x=275.0, y=500.0, width=250.0, height=60.0)
 
-        self.encrypt_button = tk.Button(self.encryption_frame, text="Encrypt Text", command=self.encrypt_text)
-        self.encrypt_button.grid(row=2, column=0, padx=10, pady=10)
+        self.filebutton_img = PhotoImage(file=("./assets/filebutton.png"))
+        self.filebutton = Button(
+                image=self.filebutton_img,
+                borderwidth=0,
+                highlightthickness=0,
+                command=self.encrypt_file,
+                relief="flat",
+                bg="#d2b9ff", activebackground="#d2b9ff"
+                )
+        self.filebutton.place(x=434.0, y=76.0, width=310.0, height=190.0)
 
-        self.clear_decrypt = tk.Button(self.encryption_frame, text="Clear")
-        self.clear_decrypt.grid(row=3, column=0, padx=10, pady=10)
-        self.clear_decrypt.config(command=lambda: self.text_entry.delete(0, tk.END))
+        self.dfilebutton_img = PhotoImage(file=("./assets/dfilebutton.png"))
+        self.dfilebutton = Button(
+                image=self.dfilebutton_img,
+                borderwidth=0,
+                highlightthickness=0,
+                command=self.decrypt_file,
+                relief="flat",
+                bg="#d2b9ff", activebackground="#d2b9ff"
+                )
+        self.dfilebutton.place(x=434.0, y=277.0, width=310.0, height=190.0)
 
-        self.declabel = tk.Label(self.encryption_frame, text="Text to Decrypt:")
-        self.declabel.grid(row=0, column=1, padx=10, pady=10)
-        self.encrypted_text_entry = selAll(self.encryption_frame)
-        self.encrypted_text_entry.grid(row=1, column=1, padx=20, pady=20)
+        self.entry_img = PhotoImage(file=("./assets/entry1.png"))
 
-        self.decrypt_button = tk.Button(self.encryption_frame, text="Decrypt Text", command=self.decrypt_text)
-        self.decrypt_button.grid(row=2, column=1, padx=10, pady=10)
+        self.canvas.create_image(209.0, 135.0, image=self.entry_img)
+        self.entry_input = Entry(
+                bd=0,
+                bg="#ffffff",
+                fg="#000716",
+                highlightthickness=0,
+                font=("Montserrat", 15))
+        self.entry_input.place(x=64.0, y=111.0, width=290.0, height=45.0)
 
-        self.clear_encrypt = tk.Button(self.encryption_frame, text="Clear")
-        self.clear_encrypt.grid(row=3, column=1, padx=10, pady=10)
-        self.clear_encrypt.config(command=lambda: self.encrypted_text_entry.delete(0, tk.END))
+        self.canvas.create_image(209.0, 366.0, image=self.entry_img)
+        self.entry_output = Entry(
+                bd=0,
+                bg="#ffffff",
+                fg="#000716",
+                highlightthickness=0,
+                font=("Montserrat", 15))
+        self.entry_output.place(x=64.0, y=342.0, width=290.0, height=45.0)
 
-        self.copy_button = tk.Button(self.encryption_frame, text="Copy to Clipboard", command=self.copy_to_clipboard)
-        self.copy_button.grid(row=4, column=1, padx=10, pady=10)
+        self.encryptbutton_img = PhotoImage(file=("./assets/encryptbutton.png"))
+        self.encryptbutton = Button(
+                image=self.encryptbutton_img,
+                borderwidth=0,
+                highlightthickness=0,
+                command=self.encrypt_text,
+                relief="flat",
+                bg="#d2b9ff", activebackground="#d2b9ff"
+                )
+        self.encryptbutton.place(x=54.0, y=174.0, width=310.0, height=60.0)
 
-        # File encryption buttons
-        self.fileEc_label = tk.Label(self.encryption_frame, text="File Encryption")
-        self.fileEc_label.grid(row=0, column=2, padx=10, pady=10)
+        self.decryptbutton_img = PhotoImage(file=("./assets/decryptbutton.png"))
+        self.decryptbutton = Button(
+                image=self.decryptbutton_img,
+                borderwidth=0,
+                highlightthickness=0,
+                command=self.decrypt_text,
+                relief="flat",
+                bg="#d2b9ff", activebackground="#d2b9ff"
+                )
+        self.decryptbutton.place(x=54.0, y=248.0, width=310.0, height=60.0)
 
-        self.file_button = tk.Button(self.encryption_frame, text="Encrypt File", command=self.encrypt_file)
-        self.file_button.grid(row=1, column=2, padx=10, pady=10)
+        self.copybutton_img = PhotoImage(file=("./assets/copybutton.png"))
+        self.copybutton = Button(
+                image=self.copybutton_img,
+                borderwidth=0,
+                highlightthickness=0,
+                command=self.copy_to_clipboard,
+                relief="flat",
+                bg="#d2b9ff", activebackground="#d2b9ff"
+                )
+        self.copybutton.place(x=54.0, y=403.0, width=310.0, height=60.0)
 
-        self.decrypt_file_button = tk.Button(self.encryption_frame, text="Decrypt File", command=self.decrypt_file)
-        self.decrypt_file_button.grid(row=2, column=2, padx=10, pady=10)
+    def meowovertpage(self):
+        self.bg_update("./assets/Ameowovertpagemain.png")
 
-        self.gotoMeow = tk.Button(self.encryption_frame, text="try Meowovert", command=self.meowGoto)
-        self.gotoMeow.grid(row=4, column=3, padx=10, pady=10)
+        self.backbutton_img = PhotoImage(file=("./assets/meowback.png"))
+        self.backbutton = Button(
+                image=self.backbutton_img,
+                borderwidth=0,
+                highlightthickness=0,
+                command=self.meowback,
+                relief="flat",
+                bg="#9e6df7", activebackground="#9e6df7"
+                )
+        self.backbutton.place(x=29.0, y=514.0, width=120.0, height=60.0)
 
-        self.cc1 = tk.Label(self.encryption_frame, text="MeowCrypt - RKS A 2024 Kelompok 5")
-        self.cc1.grid(row=5, column=1, padx=10, pady=10)
+        self.entry_img = PhotoImage(file=("./assets/meowentry.png"))
 
-        self.meowGo = tk.Frame(root)
-        self.meowFrame = tk.Frame(self.meowGo)
+        self.canvas.create_image(400.0, 130.5, image=self.entry_img)
+        self.entry_inputm = Entry(
+                bd=0,
+                bg="#ffffff",
+                fg="#000716",
+                highlightthickness=0,
+                font=("Montserrat", 15))
+        self.entry_inputm.place(x=185.0, y=105.0, width=430.0, height=53.0)
 
-        self.nyanLabel = tk.Label(self.meowFrame, text="The Meowovert")
-        self.nyanLabel.grid(row=0, column=1, padx=10, pady=10)
+        self.canvas.create_image(400.0, 379.5, image=self.entry_img)
+        self.entry_output = Entry(
+                bd=0,
+                bg="#ffffff",
+                fg="#000716",
+                highlightthickness=0,
+                font=("Montserrat", 15))
+        self.entry_output.place(x=185.0, y=354.0, width=430.0, height=53.0)
 
-        self.text_label = tk.Label(self.meowFrame, text="Text to Meowovert:")
-        self.text_label.grid(row=1, column=0, padx=10, pady=10)
+        self.encryptbutton_img = PhotoImage(file=("./assets/meowencryptbutton.png"))
+        self.encryptbuttonm = Button(
+                image=self.encryptbutton_img,
+                borderwidth=0,
+                highlightthickness=0,
+                command=self.convtoMeow,
+                relief="flat",
+                bg="#d2b9ff", activebackground="#d2b9ff"
+                )
+        self.encryptbuttonm.place(x=175.0, y=168.0, width=450.0, height=70.0)
 
-        self.orig_entry = selAll(self.meowFrame)
-        self.orig_entry.grid(row=2, column=0, padx=20, pady=20)
+        self.decryptbutton_img = PhotoImage(file=("./assets/meowdecryptbutton.png"))
+        self.decryptbuttonm = Button(
+                image=self.decryptbutton_img,
+                borderwidth=0,
+                highlightthickness=0,
+                command=self.convtoOrig,
+                relief="flat",
+                bg="#d2b9ff", activebackground="#d2b9ff"
+                )
+        self.decryptbuttonm.place(x=175.0, y=248.0, width=450.0, height=70.0)
 
-        self.encrypt_button = tk.Button(self.meowFrame, text="Meowovert Text", command=self.convtoMeow)
-        self.encrypt_button.grid(row=3, column=0, padx=10, pady=10)
+        self.copybutton_img = PhotoImage(file=("./assets/meowcopybutton.png"))
+        self.copybutton = Button(
+                image=self.copybutton_img,
+                borderwidth=0,
+                highlightthickness=0,
+                command=self.copy_to_clipboard,
+                relief="flat",
+                bg="#d2b9ff", activebackground="#d2b9ff"
+                )
+        self.copybutton.place(x=175.0, y=419.0, width=450.0, height=70.0)
 
-        self.clear_decrypt = tk.Button(self.meowFrame, text="Clear")
-        self.clear_decrypt.grid(row=4, column=0, padx=10, pady=10)
-        self.clear_decrypt.config(command=lambda: self.orig_entry.delete(0, tk.END))
+    def aboutuspage(self):
+        self.bg_update("./assets/Aaboutuspagemain.png")
 
-        self.declabel = tk.Label(self.meowFrame, text="Text to Demeowovert:")
-        self.declabel.grid(row=1, column=1, padx=10, pady=10)
+        self.backbutton_img = PhotoImage(file=("./assets/backbutton.png"))
+        self.backbutton = Button(
+                image=self.backbutton_img,
+                borderwidth=0,
+                highlightthickness=0,
+                command=self.signout,
+                relief="flat",
+                bg="#9e6df7", activebackground="#9e6df7"
+                )
+        self.backbutton.place(x=33.0, y=500.0, width=150.0, height=60.0)
 
-        self.meow_entry = selAll(self.meowFrame)
-        self.meow_entry.grid(row=2, column=1, padx=20, pady=20)
+    # Command functions
 
-        self.decrypt_button = tk.Button(self.meowFrame, text="Demeowovert Text", command=self.convtoOrig)
-        self.decrypt_button.grid(row=3, column=1, padx=10, pady=10)
-
-        self.clear_encrypt = tk.Button(self.meowFrame, text="Clear")
-        self.clear_encrypt.grid(row=4, column=1, padx=10, pady=10)
-        self.clear_encrypt.config(command=lambda: self.meow_entry.delete(0, tk.END))
-
-        self.cc2 = tk.Label(self.meowFrame, text="MeowCrypt - RKS A 2024 Kelompok 5")
-        self.cc2.grid(row=5, column=1, padx=10, pady=10)
+    def bg_update(self, img):
+        if self.canvas:  # Check if the canvas is still valid
+            self.pagebg = PhotoImage(file=(img))
+            self.canvas.create_image(400.0, 300.0, image=self.pagebg)
+        else:
+            messagebox.showerror("Error", "Canvas is not available.")
 
     def register(self):
-        username = self.username_entry.get().strip()
-        password = self.password_entry.get().strip()
+        username = self.entry_user.get().strip()
+        password = self.entry_pass.get().strip()
 
         if not username or not password:
-            messagebox.showerror("Error", "Username and password cannot be empty.")
+            messagebox.showwarning("Input Error", "Username and password cannot be empty.")
+            return
+
+        if len(password) < 8:
+            messagebox.showwarning("Input Error", "Password must be at least 8 characters long.")
+            return
+
+        if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
+            messagebox.showwarning("Input Error", "Password must contain at least one special character.")
+            return
+
+        # Check if password contains at least one uppercase letter
+        if not re.search(r"[A-Z]", password):
+            messagebox.showwarning("Input Error", "Password must contain at least one uppercase letter.")
+            return
+
+        if not re.search(r"\d", password):
+            messagebox.showwarning("Input Error", "Password must contain at least one number.")
             return
 
         hashed_password = hash_password(password)
@@ -157,8 +321,8 @@ class MeowCryptGUI:
             messagebox.showerror("Error", str(e))
 
     def login(self):
-        username = self.username_entry.get().strip()
-        password = self.password_entry.get().strip()
+        username = self.entry_user.get().strip()
+        password = self.entry_pass.get().strip()
 
         if not username or not password:
             messagebox.showerror("Error", "Username and password cannot be empty.")
@@ -171,41 +335,52 @@ class MeowCryptGUI:
         else:
             messagebox.showerror("Error", "Invalid credentials!")
 
-    def show_tools_page(self):
-        # Hide login elements
+    def clear_page(self):
+        # Instead of destroying the canvas, just hide its contents
         for widget in self.root.winfo_children():
-            widget.grid_forget()
+            if widget != self.canvas:  # Keep the canvas
+                widget.destroy()
 
-        # Show tools frame
-        self.tools_frame.grid()
-        self.encryption_frame.grid()
 
-    def meowGoto(self):
-        for widget in self.encryption_frame.winfo_children():
-            widget.grid_forget()
+    def show_tools_page(self):
+        self.clear_page()
+        self.toolspage()
 
-        self.meowGo.grid()
-        self.meowFrame.grid()
+    def show_meow(self):
+        self.clear_page()
+        self.meowovertpage()
+
+    def show_aboutus(self):
+        self.clear_page()
+        self.aboutuspage()
+
+    def signout(self):
+        self.clear_page()
+        self.loginpage()
+
+    def meowback(self):
+        self.clear_page()
+        self.toolspage()
 
     def convtoMeow(self):
-        input = self.orig_entry.get().strip()
+        input = self.entry_inputm.get().strip()
         if not input:
             messagebox.showerror("Mewror", "Text cannot be meowmpty.")
             return
         encrypted = convMeow(input)
-        self.meow_entry.delete(0 , tk.END)  # Clear previous entry
-        self.meow_entry.insert(0, encrypted)  # Show encrypted text
+        self.entry_output.delete(0 , tk.END)  # Clear previous entry
+        self.entry_output.insert(0, encrypted)  # Show encrypted text
 
     def convtoOrig(self):
-        meow_input = self.meow_entry.get().strip()
+        meow_input = self.entry_inputm.get().strip()
         if not meow_input:
             messagebox.showerror("Mewror", "Meowoverted text cannot be meowmpty.")
             return
         try:
             decrypted = convOrig(meow_input)
 
-            self.orig_entry.delete(0, tk.END)
-            self.orig_entry.insert(0, decrypted)
+            self.entry_output.delete(0 , tk.END)  # Clear previous entry
+            self.entry_output.insert(0, decrypted)  # Show encrypted text
 
             # messagebox.showinfo("Meowverted!", f"Decrypted text: {decrypted}")
         except Exception as e:
@@ -213,16 +388,16 @@ class MeowCryptGUI:
 
     def encrypt_text(self):
         key = eky
-        text = self.text_entry.get().strip()
+        text = self.entry_input.get().strip()
         if not text:
             messagebox.showerror("Error", "Text cannot be empty.")
             return
         encrypted = encrypt_text(key, text)
-        self.encrypted_text_entry.delete(0 , tk.END)  # Clear previous entry
-        self.encrypted_text_entry.insert(0, encrypted.decode())  # Show encrypted text
+        self.entry_output.delete(0 , tk.END)  # Clear previous entry
+        self.entry_output.insert(0, encrypted.decode())  # Show encrypted text
 
     def copy_to_clipboard(self):
-        encrypted_text = self.encrypted_text_entry.get().strip()
+        encrypted_text = self.entry_output.get().strip()
         if not encrypted_text:
             messagebox.showerror("Error", "No encrypted text to copy.")
             return
@@ -231,17 +406,17 @@ class MeowCryptGUI:
 
     def decrypt_text(self):
         key = eky
-        encrypted_text = self.encrypted_text_entry.get().strip()
+        encrypted_text = self.entry_input.get().strip()
         if not encrypted_text:
             messagebox.showerror("Error", "Encrypted text cannot be empty.")
             return
         try:
             decrypted = decrypt_text(key, encrypted_text.encode())
 
-            self.text_entry.delete(0, tk.END)
-            self.text_entry.insert(0, decrypted)
+            self.entry_output.delete(0, tk.END)
+            self.entry_output.insert(0, decrypted)
 
-            messagebox.showinfo("Decrypted", f"Decrypted text: {decrypted}")
+            # messagebox.showinfo("Decrypted", f"Decrypted text: {decrypted}")
         except Exception as e:
             messagebox.showerror("Error", f"Decryption failed: {str(e)}")
 
@@ -262,6 +437,7 @@ class MeowCryptGUI:
             except Exception as e:
                 messagebox.showerror("Error", f"Decryption failed: {str(e)}")
 
+# Initiate the loop
 if __name__ == "__main__":
     root = tk.Tk()
     app = MeowCryptGUI(root)
