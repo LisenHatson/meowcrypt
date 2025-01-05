@@ -6,6 +6,10 @@
 - Text and file encryption using Fernet.
 - Meowovert (convert common characters into cat meows).
 
+![Login Page](./assets/shot/loginpage.png)
+![Tools Page](./assets/shot/toolspage.png)
+![Meowovert Page](./assets/shot/meowpage.png)
+
 
 ### RKS A 2024 Kelompok 5
 - Arya Senapati Rabbani (4332401024)
