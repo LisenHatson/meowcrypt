@@ -47,12 +47,5 @@ cd meowcrypt
 
 execute the code
 ```
-python meowcrypt.py
+python ./meowcrypt.py
 ```
-
-
-or try the cli
-```
-python meowcrypt.py cli
-```
-
